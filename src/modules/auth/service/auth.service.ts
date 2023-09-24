@@ -8,40 +8,69 @@ import { ServiceExceptions } from '@utils/exceptions/service.exception';
 import { I_TOKEN } from '@utils/interface';
 import { SignUpDto } from '../dto/register.dto';
 import { TOKEN } from '@utils/types';
+import { ProfessorRepository } from '../../../modules/professor/repository/professor.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
+    @InjectRepository(ProfessorRepository)
+    private readonly professorRepository: ProfessorRepository,
   ) {}
 
   async login(dto: LoginDto): Promise<BaseResponse<I_TOKEN>> {
     try {
-      const user = await this.userRepository.getUserByName(dto.username);
+      let user;
+      if (dto.role && dto.role == 3) {
+        user = await this.professorRepository.getProfessorByName(dto.username);
 
-      if (!user) {
-        return {
-          status: HttpStatus.BAD_REQUEST,
-          data: null,
-          message: 'Invalid name or password',
-        };
-      }
+        if (!user) {
+          return {
+            status: HttpStatus.BAD_REQUEST,
+            data: null,
+            message: 'Invalid name or password',
+          };
+        }
 
-      const isValidPasswd = await bcryptHelper.isMatch(
-        user.password,
-        dto.password,
-      );
-      if (!isValidPasswd) {
-        return {
-          status: HttpStatus.BAD_REQUEST,
-          data: null,
-          message: 'Invalid name or password',
-        };
+        const isValidPasswd = await bcryptHelper.isMatch(
+          user.password,
+          dto.password,
+        );
+        if (!isValidPasswd) {
+          return {
+            status: HttpStatus.BAD_REQUEST,
+            data: null,
+            message: 'Invalid name or password',
+          };
+        }
+      } else {
+        user = await this.userRepository.getUserByName(dto.username);
+
+        if (!user) {
+          return {
+            status: HttpStatus.BAD_REQUEST,
+            data: null,
+            message: 'Invalid name or password',
+          };
+        }
+
+        const isValidPasswd = await bcryptHelper.isMatch(
+          user.password,
+          dto.password,
+        );
+        if (!isValidPasswd) {
+          return {
+            status: HttpStatus.BAD_REQUEST,
+            data: null,
+            message: 'Invalid name or password',
+          };
+        }
       }
 
       const ACCESS_TOKEN = jwtHelper.sign(
         {
+          id: user.id,
           username: user.username,
           role: user.role,
         },
@@ -52,6 +81,7 @@ export class AuthService {
 
       const REFRESH_TOKEN = jwtHelper.sign(
         {
+          id: user.id,
           username: user.username,
           role: user.role,
         },
@@ -87,6 +117,7 @@ export class AuthService {
 
       const ACCESS_TOKEN = jwtHelper.sign(
         {
+          id: newUser.id,
           username: newUser.username,
           role: newUser.role,
         },
@@ -97,6 +128,7 @@ export class AuthService {
 
       const REFRESH_TOKEN = jwtHelper.sign(
         {
+          id: newUser.id,
           username: newUser.username,
           role: newUser.role,
         },
@@ -137,7 +169,7 @@ export class AuthService {
       }
 
       const ACCESS_TOKEN = jwtHelper.sign(
-        { username: user.username, role: user.role },
+        { id: user.id, username: user.username, role: user.role },
         { expiresIn: '1d' },
       );
 

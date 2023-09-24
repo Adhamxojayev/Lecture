@@ -4,8 +4,8 @@ import { AdminService } from '../service/admin.service';
 import { AuthGuard } from '../../auth/guard/auth.guard';
 import { USER_ROLE } from '@utils/enums';
 import { Roles } from '@dec/roles.decorator';
-import { ProfessorDto } from 'src/modules/professor/dto/create-professor.dto';
-import { RolesGuard } from 'src/modules/auth/guard/role.guard';
+import { ProfessorDto } from '../../professor/dto/create-professor.dto';
+import { RolesGuard } from '../../auth/guard/role.guard';
 
 @Controller('admin')
 export class AdminController {

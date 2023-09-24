@@ -12,6 +12,9 @@ import { AuthGuard } from './modules/auth/guard/auth.guard';
 import { SeedModule } from './seed/seed.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { ProfessorModule } from './modules/professor/professor.module';
+import { HallModule } from './modules/halls/halls.module';
+import { LectureModule } from './modules/lecture/lecture.module';
+import { BookingModule } from './modules/booking/booking.module';
 
 @Module({
   imports: [
@@ -21,6 +24,9 @@ import { ProfessorModule } from './modules/professor/professor.module';
     ProfessorModule,
     AdminModule,
     SeedModule,
+    HallModule,
+    LectureModule,
+    BookingModule,
   ],
   controllers: [],
   providers: [

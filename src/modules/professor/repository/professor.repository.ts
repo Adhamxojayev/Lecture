@@ -9,7 +9,9 @@ import { USER_ROLE, USER_STATUS } from '@utils/enums';
 export class ProfessorRepository extends Repository<ProfessorEntity> {
   async getAll(): Promise<ProfessorEntity[]> {
     try {
-      return await ProfessorEntity.find();
+      return await ProfessorEntity.find({
+        select: ['id', 'firstname', 'lastname', 'username'],
+      });
     } catch (err) {
       DbExceptions.handle(err);
     }

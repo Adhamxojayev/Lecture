@@ -2,10 +2,8 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseResponse } from '@utils/base.response';
 import { ServiceExceptions } from '@utils/exceptions/service.exception';
-import { bcryptHelper } from '@utils/helper';
-import { ProfessorDto } from 'src/modules/professor/dto/create-professor.dto';
-import { IProfessor } from 'src/modules/professor/interface/interfaece';
-import { ProfessorRepository } from 'src/modules/professor/repository/professor.repository';
+import { IProfessor } from '../../professor/interface/interface';
+import { ProfessorRepository } from '../../professor/repository/professor.repository';
 
 @Injectable()
 export class ProfessorService {
@@ -14,7 +12,16 @@ export class ProfessorService {
     private readonly professorRepository: ProfessorRepository,
   ) {}
 
-  async getAll(): Promise<IProfessor[]> {
-    return this.professorRepository.getAll();
+  async getAll(): Promise<BaseResponse<IProfessor[]>> {
+    try {
+      const professors = await this.professorRepository.getAll();
+      return {
+        status: HttpStatus.OK,
+        data: professors,
+        message: 'list of professor',
+      };
+    } catch (err) {
+      ServiceExceptions.handle(err, ProfessorService.name, 'getAll');
+    }
   }
 }

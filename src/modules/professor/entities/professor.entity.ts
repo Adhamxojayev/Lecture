@@ -1,6 +1,7 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { GeneralEntity } from '@utils/base.entity';
 import { USER_ROLE, USER_STATUS } from '@utils/enums';
+import { LectureEntity } from '../../lecture/entities/lecture.entity';
 
 @Entity('professors')
 export class ProfessorEntity extends GeneralEntity {
@@ -31,4 +32,7 @@ export class ProfessorEntity extends GeneralEntity {
     default: USER_ROLE.PROFESSOR,
   })
   role: USER_ROLE;
+
+  @OneToMany(() => LectureEntity, (lecture) => lecture.professor)
+  lecture: LectureEntity;
 }
