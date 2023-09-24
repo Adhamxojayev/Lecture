@@ -9,12 +9,24 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './modules/auth/guard/role.guard';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from './modules/auth/guard/auth.guard';
+import { SeedModule } from './seed/seed.module';
+import { AdminModule } from './modules/admin/admin.module';
+import { ProfessorModule } from './modules/professor/professor.module';
+import { HallModule } from './modules/halls/halls.module';
+import { LectureModule } from './modules/lecture/lecture.module';
+import { BookingModule } from './modules/booking/booking.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(configuration.getTypeOrmConfig()),
     UserModule,
     AuthModule,
+    ProfessorModule,
+    AdminModule,
+    SeedModule,
+    HallModule,
+    LectureModule,
+    BookingModule,
   ],
   controllers: [],
   providers: [
