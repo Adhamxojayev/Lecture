@@ -2,8 +2,8 @@ import { Entity, Column } from 'typeorm';
 import { GeneralEntity } from '@utils/base.entity';
 import { USER_ROLE, USER_STATUS } from '@utils/enums';
 
-@Entity('users')
-export class UserEntity extends GeneralEntity {
+@Entity('professors')
+export class ProfessorEntity extends GeneralEntity {
   @Column({ type: 'varchar', name: 'firstname', nullable: true })
   firstname: string;
 
@@ -28,7 +28,7 @@ export class UserEntity extends GeneralEntity {
     type: 'enum',
     name: 'role',
     enum: USER_ROLE,
-    default: USER_ROLE.STUDENT,
+    default: USER_ROLE.PROFESSOR,
   })
   role: USER_ROLE;
 }

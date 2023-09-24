@@ -1,15 +1,23 @@
 import { Repository } from 'typeorm';
-import { UserEntity } from '../entities/user.entity';
+import { ProfessorEntity } from '../entities/professor.entity';
 import { CustomRepository } from '@dec/typeorm-ex.decorator';
 import { DbExceptions } from '@utils/exceptions/db.exception';
 import { SignUpDto } from '../../auth/dto/register.dto';
 import { USER_ROLE, USER_STATUS } from '@utils/enums';
 
-@CustomRepository(UserEntity)
-export class UserRepository extends Repository<UserEntity> {
-  async getUserByName(name: string): Promise<UserEntity> {
+@CustomRepository(ProfessorEntity)
+export class ProfessorRepository extends Repository<ProfessorEntity> {
+  async getAll(): Promise<ProfessorEntity[]> {
     try {
-      return await UserEntity.findOne({
+      return await ProfessorEntity.find();
+    } catch (err) {
+      DbExceptions.handle(err);
+    }
+  }
+
+  async getProfessorByName(name: string): Promise<ProfessorEntity> {
+    try {
+      return await ProfessorEntity.findOne({
         where: {
           username: name,
         },
@@ -19,7 +27,7 @@ export class UserRepository extends Repository<UserEntity> {
     }
   }
 
-  async createUser(dto: SignUpDto): Promise<UserEntity> {
+  async createProfessor(dto: SignUpDto): Promise<ProfessorEntity> {
     try {
       return await this.create({
         username: dto.username,
@@ -32,7 +40,7 @@ export class UserRepository extends Repository<UserEntity> {
     }
   }
 
-  async getUserById(id: number): Promise<UserEntity> {
+  async getProfessorById(id: number): Promise<ProfessorEntity> {
     try {
       return await this.findOneBy({ id });
     } catch (err) {
@@ -40,9 +48,12 @@ export class UserRepository extends Repository<UserEntity> {
     }
   }
 
-  async updateUserStatus(id: number, status: USER_STATUS): Promise<UserEntity> {
+  async updateUserStatus(
+    id: number,
+    status: USER_STATUS,
+  ): Promise<ProfessorEntity> {
     try {
-      const user = await this.getUserById(id);
+      const user = await this.getProfessorById(id);
       user.status = status;
       await user.save();
 
