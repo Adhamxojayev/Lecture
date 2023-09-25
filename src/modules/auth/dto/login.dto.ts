@@ -12,9 +12,4 @@ export class LoginDto {
   @IsNotEmpty()
   @IsString()
   password: string;
-
-  @ApiProperty({ enum: USER_ROLE, required: false })
-  @IsOptional()
-  @IsEnum(USER_ROLE)
-  role: number;
 }

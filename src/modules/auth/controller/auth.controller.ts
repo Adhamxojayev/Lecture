@@ -38,7 +38,6 @@ export class AuthController {
   @Public()
   @HttpCode(200)
   @Post('/signin')
-  @ApiBody({ type: LoginDto })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Successfully log in',
