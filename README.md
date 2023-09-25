@@ -66,6 +66,18 @@ getDataSourceConfig(): DataSourceOptions {
 
 ### NOTE: `admin` creates `professor` and `professor` logs in 
 
+#### NOTE: after runing 
+```bash
+npm run db:seed
+``` 
+command superAdmin will be created .
+```json
+{
+    "username": "superAdmin",
+    "password": "123456789"
+}
+```
+
 ## Testing
 ```shell
 npm run test:e2e
