@@ -6,12 +6,15 @@ import { ServiceExceptions } from '@utils/exceptions/service.exception';
 import { BaseResponse } from '@utils/base.response';
 import { ILecture } from '../interface/interface';
 import { isTimeSlotValid } from '@utils/isValidTime';
+import { UserRepository } from '../../user/repository/user.repository';
 
 @Injectable()
 export class LectureService {
   constructor(
     @InjectRepository(LectureRepository)
     private readonly lectureRepository: LectureRepository,
+    @InjectRepository(UserRepository)
+    private readonly userRepository: UserRepository,
   ) {}
 
   async create(dto: CreateLectureDto, user): Promise<BaseResponse<ILecture>> {
@@ -25,6 +28,8 @@ export class LectureService {
       }
       const inputDate = new Date(dto.date);
       const currentDate = new Date();
+
+      currentDate.setUTCHours(0, 0, 0, 0);
 
       if (inputDate < currentDate) {
         return {

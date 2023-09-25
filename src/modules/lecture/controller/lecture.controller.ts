@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpStatus,
   Post,
   Req,
   Res,
@@ -16,11 +17,22 @@ import { CreateLectureDto } from '../dto/create-lecture.dto';
 import { iReq } from '@utils/interface';
 import { AuthGuard } from '../../auth/guard/auth.guard';
 import { Public } from '@dec/public.route.decorator';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
+@ApiTags('lecture')
 @Controller('lecture')
 export class LectureController {
   constructor(private readonly lectureService: LectureService) {}
 
+  @ApiUnauthorizedResponse()
+  @ApiCreatedResponse()
+  @ApiBearerAuth()
   @Roles(USER_ROLE.PROFESSOR)
   @UseGuards(RolesGuard)
   @UseGuards(AuthGuard)
@@ -34,6 +46,10 @@ export class LectureController {
     response.status(res.status).json(res);
   }
 
+  @ApiOkResponse({
+    status: HttpStatus.OK,
+    description: 'get all lecture',
+  })
   @Public()
   @Get()
   async getAll(@Res() response: Response) {

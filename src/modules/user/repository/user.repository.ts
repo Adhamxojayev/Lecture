@@ -32,6 +32,20 @@ export class UserRepository extends Repository<UserEntity> {
     }
   }
 
+  async createProfessor(dto: SignUpDto): Promise<UserEntity> {
+    try {
+      return await this.create({
+        username: dto.username,
+        password: dto.password,
+        firstname: dto.firstname,
+        lastname: dto.lastname,
+        role: USER_ROLE.PROFESSOR,
+      }).save();
+    } catch (err) {
+      DbExceptions.handle(err);
+    }
+  }
+
   async getUserById(id: number): Promise<UserEntity> {
     try {
       return await this.findOneBy({ id });

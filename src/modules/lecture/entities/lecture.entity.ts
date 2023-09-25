@@ -1,8 +1,8 @@
 import { GeneralEntity } from '@utils/base.entity';
 import { BookingEntity } from '../../booking/entities/booking.entity';
 import { HallEntity } from '../../halls/entities/halls.entity';
-import { ProfessorEntity } from '../../professor/entities/professor.entity';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { UserEntity } from '../../user/entities/user.entity';
 
 @Entity('lecture')
 export class LectureEntity extends GeneralEntity {
@@ -12,8 +12,8 @@ export class LectureEntity extends GeneralEntity {
   @ManyToOne(() => HallEntity, (hall) => hall.lecture)
   hall: HallEntity;
 
-  @ManyToOne(() => ProfessorEntity, (professor) => professor.lecture)
-  professor: ProfessorEntity;
+  @ManyToOne(() => UserEntity, (professor) => professor.lecture)
+  professor: UserEntity;
 
   @OneToMany(() => BookingEntity, (booking) => booking.lecture)
   lecture: BookingEntity;

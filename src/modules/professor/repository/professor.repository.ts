@@ -2,8 +2,7 @@ import { Repository } from 'typeorm';
 import { ProfessorEntity } from '../entities/professor.entity';
 import { CustomRepository } from '@dec/typeorm-ex.decorator';
 import { DbExceptions } from '@utils/exceptions/db.exception';
-import { SignUpDto } from '../../auth/dto/register.dto';
-import { USER_ROLE, USER_STATUS } from '@utils/enums';
+import { USER_STATUS } from '@utils/enums';
 
 @CustomRepository(ProfessorEntity)
 export class ProfessorRepository extends Repository<ProfessorEntity> {
@@ -24,19 +23,6 @@ export class ProfessorRepository extends Repository<ProfessorEntity> {
           username: name,
         },
       });
-    } catch (err) {
-      DbExceptions.handle(err);
-    }
-  }
-
-  async createProfessor(dto: SignUpDto): Promise<ProfessorEntity> {
-    try {
-      return await this.create({
-        username: dto.username,
-        password: dto.password,
-        firstname: dto.firstname,
-        lastname: dto.lastname,
-      }).save();
     } catch (err) {
       DbExceptions.handle(err);
     }

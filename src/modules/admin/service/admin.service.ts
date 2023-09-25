@@ -5,20 +5,18 @@ import { ServiceExceptions } from '@utils/exceptions/service.exception';
 import { bcryptHelper } from '@utils/helper';
 import { ProfessorDto } from '../../professor/dto/create-professor.dto';
 import { IProfessor } from '../../professor/interface/interface';
-import { ProfessorRepository } from 'src/modules/professor/repository/professor.repository';
+import { UserRepository } from '../../user/repository/user.repository';
 
 @Injectable()
 export class AdminService {
   constructor(
-    @InjectRepository(ProfessorRepository)
-    private readonly professorRepository: ProfessorRepository,
+    @InjectRepository(UserRepository)
+    private readonly userRepository: UserRepository,
   ) {}
 
   async createProfessor(dto: ProfessorDto): Promise<BaseResponse<IProfessor>> {
     try {
-      const professor = await this.professorRepository.getProfessorByName(
-        dto.username,
-      );
+      const professor = await this.userRepository.getUserByName(dto.username);
       if (professor) {
         return {
           status: HttpStatus.BAD_REQUEST,
@@ -29,7 +27,8 @@ export class AdminService {
 
       dto.password = await bcryptHelper.hash(dto.password);
 
-      const newProfessor = await this.professorRepository.createProfessor(dto);
+      const newProfessor = await this.userRepository.createProfessor(dto);
+      delete newProfessor.password;
 
       return {
         status: HttpStatus.CREATED,
