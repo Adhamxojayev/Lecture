@@ -2,6 +2,7 @@ import { Entity, Column, OneToMany } from 'typeorm';
 import { GeneralEntity } from '@utils/base.entity';
 import { USER_ROLE, USER_STATUS } from '@utils/enums';
 import { BookingEntity } from '../../booking/entities/booking.entity';
+import { LectureEntity } from 'src/modules/lecture/entities/lecture.entity';
 
 @Entity('users')
 export class UserEntity extends GeneralEntity {
@@ -35,4 +36,7 @@ export class UserEntity extends GeneralEntity {
 
   @OneToMany(() => BookingEntity, (booking) => booking.user)
   user: BookingEntity;
+
+  @OneToMany(() => LectureEntity, (lecture) => lecture.professor)
+  lecture: LectureEntity;
 }

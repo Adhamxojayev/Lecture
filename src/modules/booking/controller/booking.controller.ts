@@ -7,7 +7,9 @@ import { RolesGuard } from '../..//auth/guard/role.guard';
 import { USER_ROLE } from '@utils/enums';
 import { iReq } from '@utils/interface';
 import { CreateBookingDto } from '../dto/create-booking.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('booking')
 @Controller('booking')
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}

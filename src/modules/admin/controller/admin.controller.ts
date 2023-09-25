@@ -6,7 +6,9 @@ import { USER_ROLE } from '@utils/enums';
 import { Roles } from '@dec/roles.decorator';
 import { ProfessorDto } from '../../professor/dto/create-professor.dto';
 import { RolesGuard } from '../../auth/guard/role.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('admin')
 @Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
